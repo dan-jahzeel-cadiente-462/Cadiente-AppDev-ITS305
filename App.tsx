@@ -1,32 +1,65 @@
 /**
  * EasySave Mobile App
- * Authentication system with Redux and Redux-Saga
+ * Base setup
  */
 
 import React from 'react';
-import { Provider } from 'react-redux';
-import { PersistGate } from 'redux-persist/integration/react';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-import createStore from './src/app/reducers';
-import rootSaga from './src/app/saga';
-import RootNavigations from './src/navigations';
+import {
+  SafeAreaView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  useColorScheme,
+  View,
+} from 'react-native';
 
-// Create store with persistence
-const { store, persistor, runSaga } = createStore();
+function App(): React.JSX.Element {
+  const isDarkMode = useColorScheme() === 'dark';
 
-// Run Root Saga
-runSaga(rootSaga);
+  const backgroundStyle = {
+    backgroundColor: isDarkMode ? '#111' : '#F3F3F3',
+  };
 
-function App() {
+  const textColor = isDarkMode ? '#FFF' : '#000';
+
   return (
-    <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <SafeAreaProvider>
-          <RootNavigations />
-        </SafeAreaProvider>
-      </PersistGate>
-    </Provider>
+    <SafeAreaView style={[styles.container, backgroundStyle]}>
+      <StatusBar
+        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+        backgroundColor={backgroundStyle.backgroundColor}
+      />
+      <View style={styles.content}>
+        <Text style={[styles.title, { color: textColor }]}>
+          EasySave Mobile
+        </Text>
+        <Text style={[styles.subtitle, { color: textColor }]}>
+          Base setup ready.
+        </Text>
+      </View>
+    </SafeAreaView>
   );
 }
 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  content: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 24,
+  },
+  title: {
+    fontSize: 32,
+    fontWeight: '700',
+    marginBottom: 12,
+  },
+  subtitle: {
+    fontSize: 18,
+    fontWeight: '400',
+  },
+});
+
 export default App;
+
